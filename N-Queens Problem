@@ -1,42 +1,32 @@
-def NQueens(n):
-  def backtracking(row):
-    if row==n:
-      board=[]
-      for i in range(n):
-         row_str=""
-      for j in range(n)
-        if j==queens[i]:
-           row_str+="Q"
-        else:
-          row_str+="."
-      board.append(row_str)
-    result.append(board)
-    return 
+def solveNQueens(n):
+    cols = set()
+    pos_diag = set() # row - col is constant
+    neg_diag = set() # row + col is constant
+    
+    results = []
+    board = [['.'] * n for _ in range(n)]
 
-for col in range(n):
-    if col in cols or (row -col)in diag1 or (row+col)in diag2:
-    continue
-   queens[row]=col
-   cols.add(col)
-   diag1.add(row-col)
-   diag2.add(row+col)
- backtrack(row+1)
- cols.remove (col)
- diag1.remove(row-col)
- diag.remove(row+col)
-result=[]
-queens=[-1]*n
-cols=set()
-diag1=set()
-diag2=set()
+    def backtrack(r):
+        if r == n:
+            formatted_board = ["".join(row) for row in board]
+            results.append(formatted_board)
+            return
 
-back track(0)
-return result
-n=5
+        for c in range(n):
+            # Check safety
+            if c in cols or (r - c) in pos_diag or (r + c) in neg_diag:
+                continue
+            cols.add(c)
+            pos_diag.add(r - c)
+            neg_diag.add(r + c)
+            board[r][c] = "Q"
 
-solution =NQueens(n)
-for sol in solutions:
-  for  row in sol:
-    print(row)
-print()
-       
+           
+            backtrack(r + 1)
+            cols.remove(c)
+            pos_diag.remove(r - c)
+            neg_diag.remove(r + c)
+            board[r][c] = "."
+            
+    backtrack(0)
+    return results
